@@ -10,7 +10,6 @@ vertexShader :
         { proj : Mat4
         , view : Mat4
         , model : Mat4
-        , eyePosition : Vec3
         }
         {}
 vertexShader =
@@ -27,24 +26,23 @@ uniform mat4 view;
 // Model matrix
 uniform mat4 model;
 
-// Eye position, already in model space (may be removed if
-// calculation is done in view space).
-uniform vec3 eyePosition;
-
+// The maximum point size.
 const float MaxPointSize = 100.0;
+
+// The distance until the point no longer can be seen.
+const float Vista = 100.0;
 
 void main(void)
 {
-  // Transform the point's position to model space.
-  vec4 positionT = model * vec4(position, 1.0);
+  // Transform the point's position to view space.
+  vec4 positionT = view * model * vec4(position, 1.0);
 
   // Calculate the proportional size of the point, given the distance from
-  // the eye.
-  float propSize =
-    1.0 - distance(positionT.xyz, eyePosition) / 100.0;
+  // the eye (which is at origin).
+  float propSize = 1.0 - distance(vec3(0.0), positionT.xyz) / Vista;
 
   gl_PointSize = max(propSize * MaxPointSize, 0.0);
-  gl_Position = proj * view * positionT;
+  gl_Position = proj * positionT;
 }
 |]
 

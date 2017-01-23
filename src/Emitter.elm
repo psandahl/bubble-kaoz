@@ -29,13 +29,12 @@ init =
         }
 
 
-render : Mat4 -> Mat4 -> Vec3 -> Emitter -> GL.Entity
-render proj view eyePosition emitter =
+render : Mat4 -> Mat4 -> Emitter -> GL.Entity
+render proj view emitter =
     GL.entity vertexShader
         fragmentShader
         emitter.point
         { proj = proj
         , view = view
         , model = emitter.model
-        , eyePosition = eyePosition
         }

@@ -9,10 +9,7 @@ import WebGL as GL
 
 
 type alias Model =
-    { eyePosition :
-        Vec3
-        -- Position of the eye, needed for the scaling of point sprites.
-    , proj :
+    { proj :
         Mat4
         -- The projection matrix.
     , view :
@@ -40,18 +37,13 @@ main =
 
 init : ( Model, Cmd Msg )
 init =
-    let
-        eye =
-            vec3 0 0 50
-    in
-        ( { eyePosition = eye
-          , proj =
-                makePerspective 45 (toFloat width / toFloat height) 0.01 100
-          , view = makeLookAt eye (vec3 0 0 0) (vec3 0 1 0)
-          , emitter = Emitter.init
-          }
-        , Cmd.none
-        )
+    ( { proj =
+            makePerspective 45 (toFloat width / toFloat height) 0.01 100
+      , view = makeLookAt (vec3 0 0 50) (vec3 0 0 0) (vec3 0 1 0)
+      , emitter = Emitter.init
+      }
+    , Cmd.none
+    )
 
 
 view : Model -> Html Msg
@@ -65,7 +57,7 @@ view model =
         [ Attr.width width
         , Attr.height height
         ]
-        [ Emitter.render model.proj model.view model.eyePosition model.emitter
+        [ Emitter.render model.proj model.view model.emitter
         ]
 
 
