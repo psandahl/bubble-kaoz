@@ -4,6 +4,8 @@ import Math.Matrix4 exposing (Mat4, makeTranslate)
 import Math.Vector3 exposing (Vec3, vec3)
 import Shaders exposing (vertexShader, fragmentShader)
 import WebGL as GL
+import WebGL.Settings.Blend as GLBlend
+import WebGL.Settings.DepthTest as GLDepth
 
 
 type alias Emitter =
@@ -21,7 +23,7 @@ init : Emitter
 init =
     let
         position =
-            vec3 0 0 0
+            vec3 0 0 30
     in
         { position = position
         , model = makeTranslate position
@@ -31,7 +33,11 @@ init =
 
 render : Mat4 -> Mat4 -> Emitter -> GL.Entity
 render proj view emitter =
-    GL.entity vertexShader
+    GL.entityWith
+        [ GLBlend.add GLBlend.srcAlpha GLBlend.dstAlpha
+        , GLDepth.always { write = True, near = 0, far = 1 }
+        ]
+        vertexShader
         fragmentShader
         emitter.point
         { proj = proj

@@ -54,6 +54,17 @@ precision mediump float;
 
 void main(void)
 {
-  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+  vec2 pointCoord = gl_PointCoord - vec2(0.5);
+  float len = dot(pointCoord, pointCoord);
+  if (len <= 0.25)
+  {
+    vec4 color1 = vec4(65.0 / 255.0, 105.0 / 255.0, 225.0 / 255.0, 0.5);
+    vec4 color2 = vec4(135.0 / 255.0, 206.0 / 255.0, 250.0 / 255.0, 0.04);
+    gl_FragColor = mix(color1, color2, smoothstep(0.1, 0.25, len));
+  }
+  else
+  {
+    discard;
+  }
 }
 |]
