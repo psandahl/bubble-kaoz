@@ -42,7 +42,7 @@ init : ( Model, Cmd Msg )
 init =
     let
         eye =
-            vec3 0 0 25
+            vec3 0 0 50
     in
         ( { eyePosition = eye
           , proj =
