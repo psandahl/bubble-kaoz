@@ -58,8 +58,8 @@ void main(void)
   float len = dot(pointCoord, pointCoord);
   if (len <= 0.25)
   {
-    vec4 color1 = vec4(25.0 / 255.0, 25.0 / 255.0, 112.0 / 255.0, 0.8);
-    vec4 color2 = vec4(0.0 / 255.0, 0.0 / 255.0, 155.0 / 255.0, 0.0);
+    vec4 color1 = vec4(35.0 / 255.0, 35.0 / 255.0, 155.0 / 255.0, 0.5);
+    vec4 color2 = vec4(0.0 / 255.0, 0.0 / 255.0, 205.0 / 255.0, 0.0);
     gl_FragColor = mix(color1, color2, smoothstep(0.1, 0.25, len));
   }
   else

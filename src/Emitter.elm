@@ -14,8 +14,8 @@ type alias Emitter =
 
 init : Emitter
 init =
-    { point1 = Point.init <| vec3 0 0 0
-    , point2 = Point.init <| vec3 1 0 -3
+    { point1 = Point.init <| vec3 0 0 40
+    , point2 = Point.init <| vec3 0.5 0 43
     }
 
 
