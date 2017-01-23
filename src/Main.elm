@@ -57,8 +57,8 @@ view model =
         [ Attr.width width
         , Attr.height height
         ]
-        [ Emitter.render model.proj model.view model.emitter
-        ]
+    <|
+        Emitter.render model.proj model.view model.emitter
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
