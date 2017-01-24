@@ -1,7 +1,8 @@
-module BubbleMaker exposing (BubbleMaker, init, render)
+module BubbleMaker exposing (BubbleMaker, init, newBubble, render, randomVec3)
 
 import Math.Matrix4 exposing (Mat4, makeTranslate)
 import Math.Vector3 exposing (Vec3, vec3)
+import Random as Random
 import Shaders exposing (vertexShader, fragmentShader)
 import WebGL as GL
 import WebGL.Settings.Blend as GLBlend
@@ -32,8 +33,13 @@ type alias Bubble =
 init : BubbleMaker
 init =
     { geoPoint = GL.points [ { position = vec3 0 0 0 } ]
-    , bubbles = [ newBubble <| vec3 0 0 0 ]
+    , bubbles = []
     }
+
+
+newBubble : Vec3 -> BubbleMaker -> BubbleMaker
+newBubble vec bubbleMaker =
+    { bubbleMaker | bubbles = makeBubble vec :: bubbleMaker.bubbles }
 
 
 render : Mat4 -> Mat4 -> BubbleMaker -> List GL.Entity
@@ -41,8 +47,13 @@ render proj view bubbleMaker =
     List.map (renderBubble proj view bubbleMaker.geoPoint) bubbleMaker.bubbles
 
 
-newBubble : Vec3 -> Bubble
-newBubble position =
+randomVec3 : Random.Generator Vec3
+randomVec3 =
+    Random.map3 vec3 (Random.float -30 30) (Random.float -30 30) (Random.float -30 30)
+
+
+makeBubble : Vec3 -> Bubble
+makeBubble position =
     { position = position
     , model = makeTranslate position
     }

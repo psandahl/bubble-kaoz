@@ -5,6 +5,8 @@ import Html exposing (Html)
 import Html.Attributes as Attr
 import Math.Matrix4 exposing (Mat4, makePerspective, makeLookAt)
 import Math.Vector3 exposing (Vec3, vec3)
+import Random as Random
+import Time exposing (Time, second, every)
 import WebGL as GL
 
 
@@ -22,7 +24,8 @@ type alias Model =
 
 
 type Msg
-    = NoOp
+    = Tick
+    | NewBubbleVector Vec3
 
 
 main : Program Never Model Msg
@@ -31,7 +34,7 @@ main =
         { init = init
         , view = view
         , update = update
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = subscriptions
         }
 
 
@@ -63,7 +66,22 @@ view model =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        Tick ->
+            ( model, Random.generate NewBubbleVector BubbleMaker.randomVec3 )
+
+        NewBubbleVector vec ->
+            ( { model
+                | bubbleMaker =
+                    BubbleMaker.newBubble vec model.bubbleMaker
+              }
+            , Cmd.none
+            )
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    every second (always Tick)
 
 
 width : Int
