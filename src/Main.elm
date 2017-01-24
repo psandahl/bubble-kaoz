@@ -1,6 +1,6 @@
 module Main exposing (main)
 
-import Emitter exposing (Emitter)
+import BubbleMaker exposing (BubbleMaker)
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Math.Matrix4 exposing (Mat4, makePerspective, makeLookAt)
@@ -15,9 +15,9 @@ type alias Model =
     , view :
         Mat4
         -- The camera matrix.
-    , emitter :
-        Emitter
-        -- The bubble emitter.
+    , bubbleMaker :
+        BubbleMaker
+        -- The bubble maker.
     }
 
 
@@ -40,7 +40,7 @@ init =
     ( { proj =
             makePerspective 45 (toFloat width / toFloat height) 0.01 100
       , view = makeLookAt (vec3 0 0 50) (vec3 0 0 0) (vec3 0 1 0)
-      , emitter = Emitter.init
+      , bubbleMaker = BubbleMaker.init
       }
     , Cmd.none
     )
@@ -58,7 +58,7 @@ view model =
         , Attr.height height
         ]
     <|
-        Emitter.render model.proj model.view model.emitter
+        BubbleMaker.render model.proj model.view model.bubbleMaker
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
