@@ -7,7 +7,7 @@ import Html.Attributes as Attr
 import Math.Matrix4 exposing (Mat4, makePerspective, makeLookAt)
 import Math.Vector3 exposing (Vec3, vec3)
 import Random as Random
-import Time exposing (Time, second, every)
+import Time exposing (Time, millisecond, every)
 import WebGL as GL
 
 
@@ -91,14 +91,14 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.batch [ every second (always Tick), diffs Animate ]
+    Sub.batch [ every (500 * millisecond) (always Tick), diffs Animate ]
 
 
 width : Int
 width =
-    800
+    1024
 
 
 height : Int
 height =
-    600
+    768
