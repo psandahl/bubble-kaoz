@@ -1,5 +1,6 @@
 module Main exposing (main)
 
+import AnimationFrame exposing (diffs)
 import BubbleMaker exposing (BubbleMaker)
 import Html exposing (Html)
 import Html.Attributes as Attr
@@ -26,6 +27,7 @@ type alias Model =
 type Msg
     = Tick
     | NewBubbleVector Vec3
+    | Animate Time
 
 
 main : Program Never Model Msg
@@ -78,10 +80,18 @@ update msg model =
             , Cmd.none
             )
 
+        Animate t ->
+            ( { model
+                | bubbleMaker =
+                    BubbleMaker.animate t model.bubbleMaker
+              }
+            , Cmd.none
+            )
+
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    every second (always Tick)
+    Sub.batch [ every second (always Tick), diffs Animate ]
 
 
 width : Int
